@@ -21,7 +21,7 @@
 
 use strict;
 use warnings;
-my ($size, $logfile, $offsetfile);
+my ($size, $logfile, $offsetfile, $basename, $dir);
 use Getopt::Std;
 my %opts = ();
 
@@ -53,7 +53,10 @@ if (! -f $logfile) {
 }
 unless ($offsetfile) {
     # offsetfile not given, use .offset/$logfile in the same directory
-    $offsetfile = '.' . $logfile . '.offset';
+    chomp for $basename = `basename $logfile`;
+    chomp for $dir = `dirname $logfile`; 
+    $offsetfile = $dir . '/.' . $basename . '.offset';
+    # print $offsetfile
 }
 
 unless (open(LOGFILE, $logfile)) {
